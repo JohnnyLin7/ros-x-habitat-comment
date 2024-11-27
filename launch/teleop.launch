@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<launch>
+     <!--添加 use_sim_time 参数，因为是在仿真环境中运行 -->
+    <!-- <param name="/use_sim_time" value="true"/> -->
+
+ 	<node pkg="joy" type="joy_node" name="joy_node">
+ 		<param name="autorepeat_rate " value="20" />
+ 		<param name="coalesce_interval " value="0.05" />
+ 	</node>
+
+ 	<node pkg="ros_x_habitat" type="joy_controller.py" name="joy_controller" />
+
+	<node pkg="image_view" type="image_view" name="image_view_rgb">
+		<remap from="image" to="rgb"/>
+	</node>
+
+	<node pkg="image_view" type="image_view" name="image_view_depth">
+		<remap from="image" to="depth"/>
+	</node>
+
+	<!-- <node pkg="rqt_graph" type="rqt_graph" name="rqt_graph"/>
+
+	<node pkg="ros_x_habitat" type="dummy_ptgoal_with_gps_compass_subscriber.py" name="dummy_ptgoal_with_gps_compass_subscriber" /> -->
+
+	<node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
+		<remap from="image" to="depth"/>
+		<param name="output_frame_id" value="laser"/>
+		<param name="scan_time" value="0.025" />
+		<!-- 添加以下参数 -->
+		<param name="scan_height" value="50"/>  <!-- 扫描高度增加到50个像素 -->
+		<param name="range_min" value="0.1"/>   <!-- 最小检测范围 -->
+		<param name="range_max" value="5.0"/>   <!-- 最大检测范围 -->
+		<!-- 设置激光扫描仰角,使其能探测到低矮物体 -->
+		<param name="cam_model_update" value="false"/> 
+		<param name="scan_line" value="180"/>  <!-- 从深度图220行开始扫描,约对应-15度俯视角 -->
+	</node>
+
+	<node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen">
+		<param name="fixed_frame" value="odom"/>
+		<param name="base_frame" value="base_frame"/>
+
+		<!-- 确保发布odom -->
+		<param name="publish_odom" value="true"/>
+		<param name="publish_tf" value="true"/>
+		<param name="publish_pose" value="true"/>
+
+
+		<param name="max_iterations" value="5"/>
+		<param name="max_correspondence_dist" value="0.3"/>
+		<remap from="camera_info" to="camera_info"/>
+
+		<!-- 改进匹配稳定性 -->
+		<param name="use_alpha_beta" value="true"/>
+		<param name="alpha" value="0.1"/>
+		<param name="beta" value="0.1"/>
+
+		<!-- 提高发布频率 -->
+		<param name="publish_period" value="0.02"/>  <!-- 50Hz -->
+
+		<param name="tf_cache_time" value="3.0"/>
+		<param name="use_tf_scan_transformation" value="true"/>
+		<param name="max_tf_delay" value="0.5"/>
+
+	</node>
+
+    <node pkg="tf" type="static_transform_publisher" name="base_frame_to_laser" 
+		args="0.0 0.0 0.0 0.0 0.0 0.0 /base_frame /laser 100
+	"/>
+
+</launch>
