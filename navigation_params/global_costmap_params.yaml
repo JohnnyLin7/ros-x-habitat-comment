@@ -10,3 +10,7 @@ global_costmap:
   track_unknown_space: true         # 跟踪未知空间
   unknown_cost_value: 255          # 将未知区域设为最高代价值
   lethal_cost_threshold: 253       # 致命障碍物阈值
+  neutral_cost: 50               # 降低自由空间代价
+  cost_factor: 5.0              # 增大代价因子
+  orientation_mode: 1           # 考虑方向约束
+  outline_map: true            # 标记地图边界

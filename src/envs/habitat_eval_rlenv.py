@@ -1,4 +1,5 @@
 from logging import Logger
+import random
 
 from habitat.core.simulator import Observations
 
@@ -55,7 +56,7 @@ class HabitatEvalRLEnv(HabitatRLEnv):
             k.lower(): v
             for k, v in self._env._config.ENVIRONMENT.ITERATOR_OPTIONS.items()
         }
-        iter_option_dict["seed"] = self._env._config.SEED
-        self._env._episode_iterator = self._env._dataset.get_episode_iterator(
+        iter_option_dict["seed"] =  self._env._config.SEED
+        self._env._episode_iterator= self._env._dataset.get_episode_iterator(
             **iter_option_dict
         )

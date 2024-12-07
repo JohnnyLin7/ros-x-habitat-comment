@@ -31,5 +31,5 @@ TASK:
     
 DATASET:
   TYPE: PointNav-v1
-  SPLIT: test
+  SPLIT: train
   DATA_PATH: data/datasets/pointnav/mp3d/v1/{split}/{split}.json.gz

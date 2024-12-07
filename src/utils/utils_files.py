@@ -20,31 +20,31 @@ def load_seeds_from_file(seed_file_path):
 
 
 def load_episode_identifiers(
-    episodes_to_visualize_file_path: str, has_header: bool
+    episodes_to_visualize_file_path: str,
+    has_header: bool = False,
 ) -> Tuple[List[str], List[str]]:
-    r"""
-    Load episode identifiers from the given file. Each episode must be specified
-    by an episode ID and a scene ID.
-    :param episodes_to_visualize_file_path: path to a .csv file of episode
-        identifiers
-    :param has_header: if the .csv file has header or not
-    :returns: a list of episode ID's and a list of scene ID's. One-to-one
-        correspondence
+    """
+    从CSV文件中加载episode ID和scene ID
     """
     episode_ids = []
     scene_ids = []
-    with open(episodes_to_visualize_file_path, newline="") as csv_file:
-        csv_lines = csv.reader(csv_file)
+    
+    with open(episodes_to_visualize_file_path, 'r') as f:
+        reader = csv.reader(f)
         if has_header:
-            next(csv_lines, None)
-        for line in csv_lines:
-            episode_id = str(line[0])
-            scene_id = str(line[1])
-            assert episode_id is not None and episode_id != ""
-            assert scene_id is not None and scene_id != ""
-            episode_ids.append(episode_id)
-            scene_ids.append(scene_id)
-
+            next(reader)  # 跳过标题行
+            
+        rows = list(reader)  # 读取所有行
+        print(f"从CSV文件中读取了 {len(rows)} 行数据")
+        
+        for row in rows:
+            if len(row) >= 2:  # 确保行中有足够的列
+                episode_ids.append(row[0])
+                scene_ids.append(row[1])
+            else:
+                print(f"警告: 跳过无效行: {row}")
+    
+    print(f"成功加载 {len(episode_ids)} 个有效场景")
     return episode_ids, scene_ids
 
 

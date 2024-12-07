@@ -3,8 +3,6 @@ ros_x_habitat
 
 A ROS package to bridge [AI Habitat](https://aihabitat.org/) with the ROS ecosystem.
 
-https://user-images.githubusercontent.com/22675300/209244722-2655536c-1104-4554-92f5-bb05cec9523c.mp4
-
 ## Outline
    1. [Motivation](#motivation)
    1. [System Architecture](#architecture)

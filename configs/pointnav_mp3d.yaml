@@ -1,4 +1,8 @@
 ENVIRONMENT:
+  ITERATOR_OPTIONS:
+    SHUFFLE: False
+    GROUP_BY_SCENE: True  # 按场景分组
+    CYCLE: False         # 不循环遍历
   MAX_EPISODE_STEPS: 500
 SIMULATOR:
   AGENT_0:
